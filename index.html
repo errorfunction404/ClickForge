@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClickForge</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="auth-screen" id="authScreen">
+    <section class="auth-card">
+      <div class="auth-brand">
+        <div class="brand-mark">CF</div>
+        <div>
+          <strong>ClickForge</strong>
+          <span>Secure vault access</span>
+        </div>
+      </div>
+      <div class="auth-copy">
+        <span class="eyebrow">Account required</span>
+        <h1>Enter your forge</h1>
+        <p>Create a username and password once, then sign back in later from the database-backed vault.</p>
+      </div>
+      <div class="auth-tabs">
+        <button class="is-active" id="authLoginTab" type="button">Sign in</button>
+        <button id="authRegisterTab" type="button">Create account</button>
+      </div>
+      <form class="auth-form is-active" id="loginForm">
+        <label for="loginUsername">Username</label>
+        <input id="loginUsername" name="username" type="text" autocomplete="username" required>
+        <label for="loginPassword">Password</label>
+        <input id="loginPassword" name="password" type="password" autocomplete="current-password" required>
+        <button class="primary-button full-button" type="submit">Sign in</button>
+      </form>
+      <form class="auth-form" id="registerForm">
+        <label for="registerUsername">New username</label>
+        <input id="registerUsername" name="username" type="text" autocomplete="username" required>
+        <label for="registerPassword">Create password</label>
+        <input id="registerPassword" name="password" type="password" autocomplete="new-password" required>
+        <button class="primary-button full-button" type="submit">Create account</button>
+      </form>
+      <p class="auth-message" id="authMessage"></p>
+    </section>
+  </div>
+
+  <div class="loader is-auth-wait" id="loader">
+    <div class="loader-shell">
+      <div class="loader-orbit">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="loader-core">
+        <div class="loader-mark">CF</div>
+      </div>
+      <h1>ClickForge</h1>
+      <p>Igniting your vault</p>
+      <div class="loader-meter"><span></span></div>
+    </div>
+  </div>
+
+  <div class="app is-hidden" id="app">
+    <aside class="rail">
+      <button class="soft-pill" id="focusToggle" type="button">
+        <span>×</span>
+        <span>Close</span>
+      </button>
+      <div class="brand">
+        <div class="brand-mark">CF</div>
+        <div>
+          <strong>ClickForge</strong>
+          <span>Vault OS</span>
+        </div>
+      </div>
+      <nav class="nav" aria-label="Primary">
+        <button class="nav-button is-active" data-page="home" type="button">
+          <span>▦</span>
+          <span>Home</span>
+        </button>
+        <button class="nav-button" data-page="profile" type="button">
+          <span>●</span>
+          <span>Profile</span>
+        </button>
+        <button class="nav-button" data-page="shop" type="button">
+          <span>▣</span>
+          <span>Shop</span>
+        </button>
+        <button class="nav-button" data-page="settings" type="button">
+          <span>⚙</span>
+          <span>Settings</span>
+        </button>
+      </nav>
+      <div class="rail-card">
+        <span>Current goal</span>
+        <strong id="railGoal">Task 1 / 500</strong>
+        <div class="thin-progress"><span id="railProgress"></span></div>
+      </div>
+    </aside>
+
+    <main class="shell">
+      <header class="topbar">
+        <div class="top-actions">
+          <button class="icon-button" id="settingsShortcut" type="button" aria-label="Open settings">⚙</button>
+          <button class="icon-button" id="notifyButton" type="button" aria-label="Show notification">●</button>
+        </div>
+        <div class="time-card">
+          <span id="dateLine">Today</span>
+          <strong id="timeLine">00:00</strong>
+        </div>
+        <div class="token-chip">
+          <span class="token-dot">◐</span>
+          <strong id="tokenCount">0</strong>
+          <button class="plus-button" id="shopShortcut" type="button" aria-label="Open shop">+</button>
+        </div>
+        <button class="top-logout" id="headerLogoutButton" type="button">Log out</button>
+        <button class="menu-button" id="menuButton" type="button" aria-label="Open quick menu">
+          <span>⋮</span>
+        </button>
+        <div class="quick-menu" id="quickMenu">
+          <button type="button" data-page="home">Return home</button>
+          <button type="button" data-page="shop">Open upgrades</button>
+          <button type="button" data-page="settings">Customize app</button>
+        </div>
+      </header>
+
+      <section class="toast-stack" id="toastStack" aria-live="polite"></section>
+
+      <section class="page is-active" id="homePage" data-page-panel="home">
+        <div class="home-grid">
+          <section class="profile-hero surface">
+            <div class="avatar-ring">
+              <img id="heroProfileImage" alt="Profile avatar">
+            </div>
+            <h1 id="profileName">Mr.Bobrovsky</h1>
+            <p id="profileHandle">@mr.bobrovsky</p>
+            <div class="stat-row">
+              <div>
+                <strong id="winRate">70%</strong>
+                <span>Win/Lose</span>
+              </div>
+              <div>
+                <strong id="levelText">1</strong>
+                <span>Level</span>
+              </div>
+              <div>
+                <strong id="daysText">1</strong>
+                <span>Days</span>
+              </div>
+            </div>
+            <div class="week-strip" id="weekStrip"></div>
+          </section>
+
+          <section class="click-stage surface">
+            <div class="click-stage-top">
+              <div>
+                <span class="eyebrow">Central forge</span>
+                <h2 id="clickTitle">Tap the core</h2>
+              </div>
+              <div class="power-chip">
+                <span>Power</span>
+                <strong id="powerText">+1</strong>
+              </div>
+            </div>
+            <div class="click-zone">
+              <div class="pulse-ring"></div>
+              <button id="clickButton" class="click-button" type="button" aria-label="Click for Flux tokens">
+                <img id="clickerImage" alt="Clicker core">
+              </button>
+              <div class="float-layer" id="floatLayer"></div>
+            </div>
+            <div class="meter-card">
+              <div>
+                <span>Total Clicks</span>
+                <strong id="clickCount">0</strong>
+              </div>
+              <div>
+                <span>Flux Tokens</span>
+                <strong id="homeTokenCount">0</strong>
+              </div>
+              <div>
+                <span>Completed</span>
+                <strong id="completedText">0 / 500</strong>
+              </div>
+            </div>
+          </section>
+
+          <section class="task-panel surface">
+            <div class="section-head">
+              <div>
+                <span class="eyebrow">Active task</span>
+                <h2 id="taskName">Task</h2>
+              </div>
+              <span class="round-badge" id="taskNumber">1</span>
+            </div>
+            <p id="taskDescription">Reach the target to unlock the next step.</p>
+            <div class="task-progress">
+              <div>
+                <span id="taskProgressLabel">0 / 10</span>
+                <strong id="taskRewardLabel">Reward 10 Flux</strong>
+              </div>
+              <div class="thick-progress"><span id="taskProgressBar"></span></div>
+            </div>
+            <div class="task-actions">
+              <button class="primary-button" id="claimTaskButton" type="button">Claim task</button>
+              <button class="ghost-button" id="buyTaskButton" type="button">Boost through</button>
+            </div>
+          </section>
+
+          <section class="story-card friends-card surface">
+            <div class="stacked-avatars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <strong>Friends</strong>
+            <span id="friendCount">14 online</span>
+          </section>
+
+          <section class="story-card streak-card surface">
+            <div>
+              <h3>Keep it up!</h3>
+              <p><strong id="streakText">1</strong> days in a row you are here.</p>
+              <div class="mini-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span class="is-dim"></span>
+                <span class="is-dim"></span>
+              </div>
+            </div>
+            <div class="trophy-art">
+              <span></span>
+            </div>
+          </section>
+
+          <section class="wide-card surface">
+            <div class="coin-art">
+              <span></span>
+            </div>
+            <div>
+              <h3>Complete new tasks</h3>
+              <p>Earn bonus Flux with every milestone and keep your forge expanding.</p>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="page" id="profilePage" data-page-panel="profile">
+        <div class="profile-layout">
+          <section class="profile-card surface">
+            <div class="avatar-ring large">
+              <img id="profilePageImage" alt="Profile avatar">
+            </div>
+            <h2 id="profilePageName">Mr.Bobrovsky</h2>
+            <p id="profilePageHandle">@mr.bobrovsky</p>
+            <div class="profile-actions">
+              <button class="primary-button file-trigger" data-file="profileInput" type="button">Change avatar</button>
+              <button class="ghost-button" id="clearProfileImage" type="button">Reset avatar</button>
+            </div>
+            <input id="profileInput" type="file" accept="image/*">
+          </section>
+          <section class="surface profile-metrics">
+            <div class="section-head">
+              <div>
+                <span class="eyebrow">Vault profile</span>
+                <h2>Performance</h2>
+              </div>
+              <span class="round-badge" id="profileLevelBadge">1</span>
+            </div>
+            <div class="metric-grid">
+              <div><span>Clicks</span><strong id="profileClicks">0</strong></div>
+              <div><span>Flux</span><strong id="profileTokens">0</strong></div>
+              <div><span>Power</span><strong id="profilePower">+1</strong></div>
+              <div><span>Upgrades</span><strong id="profileUpgrades">0</strong></div>
+            </div>
+            <div class="achievement-row" id="achievementRow"></div>
+          </section>
+          <section class="surface calendar-panel">
+            <div class="section-head">
+              <div>
+                <span class="eyebrow">Presence</span>
+                <h2>This week</h2>
+              </div>
+              <button class="ghost-button" id="copyTagButton" type="button">Copy tag</button>
+            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="page" id="shopPage" data-page-panel="shop">
+        <div class="shop-layout">
+          <section class="surface shop-hero">
+            <div>
+              <span class="eyebrow">Upgrade shop</span>
+              <h2>Build a stronger forge</h2>
+              <p>Unlock 2x, 3x, and deeper multipliers as your vault grows. New systems reveal gradually.</p>
+            </div>
+            <div class="shop-vault">
+              <span>Flux</span>
+              <strong id="shopTokens">0</strong>
+            </div>
+          </section>
+          <section class="upgrade-grid" id="upgradeGrid"></section>
+        </div>
+      </section>
+
+      <section class="page" id="settingsPage" data-page-panel="settings">
+        <div class="settings-layout">
+          <section class="surface settings-card">
+            <div class="section-head">
+              <div>
+                <span class="eyebrow">Theme</span>
+                <h2>Interface color</h2>
+              </div>
+              <span class="round-badge" id="themePreview">●</span>
+            </div>
+            <div class="swatch-grid" id="swatchGrid"></div>
+            <label class="field-label" for="customColor">Custom solid color</label>
+            <div class="color-row">
+              <input id="customColor" type="color" value="#b9ff22">
+              <button class="primary-button" id="applyColorButton" type="button">Apply color</button>
+            </div>
+          </section>
+          <section class="surface settings-card">
+            <div class="section-head">
+              <div>
+                <span class="eyebrow">Typography</span>
+                <h2>Font choice</h2>
+              </div>
+            </div>
+            <label class="field-label" for="fontSelect">Application font</label>
+            <select id="fontSelect"></select>
+            <button class="primary-button full-button" id="saveFontButton" type="button">Save font</button>
+          </section>
+          <section class="surface settings-card">
+            <div class="section-head">
+              <div>
+                <span class="eyebrow">Images</span>
+                <h2>Personalization</h2>
+              </div>
+            </div>
+            <div class="image-controls">
+              <button class="primary-button file-trigger" data-file="profileInputSettings" type="button">Upload profile image</button>
+              <button class="ghost-button file-trigger" data-file="clickerInput" type="button">Upload clicker image</button>
+              <button class="ghost-button" id="clearClickerImage" type="button">Reset clicker</button>
+            </div>
+            <div class="preset-grid" id="clickerPresetGrid"></div>
+            <input id="profileInputSettings" type="file" accept="image/*">
+            <input id="clickerInput" type="file" accept="image/*">
+          </section>
+          <section class="surface settings-card danger-zone">
+            <div>
+              <span class="eyebrow">Storage</span>
+              <h2>Local save</h2>
+              <p>Your clicks, Flux, tasks, upgrades, theme, font, profile image, and clicker image are saved on this device.</p>
+            </div>
+            <button class="ghost-button" id="exportButton" type="button">Export save</button>
+            <button class="ghost-button" id="logoutButton" type="button">Sign out</button>
+            <button class="danger-button" id="resetButton" type="button">Reset progress</button>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
